@@ -10,7 +10,7 @@ import java.util.*;
 public class Server {
 
 	/*
-	 * ³ÉÔ±±äÁ¿ÉÁÁÁµÇ³¡
+	 * æˆå‘˜å˜é‡é—ªäº®ç™»åœº
 	 */
 	List<ClientThread> clients = new ArrayList<ClientThread>();
 	List<Games> games= new ArrayList<Games>();
@@ -20,7 +20,7 @@ public class Server {
 
 	public void start() {
 		try {
-			System.out.println("·şÎñÆ÷½ø³ÌÒÑ¾­Æô¶¯£¡");
+			System.out.println("æœåŠ¡å™¨è¿›ç¨‹å·²ç»å¯åŠ¨ï¼");
 			boolean iConnect = false;
 			ServerSocket ss = new ServerSocket(10000);
 			iConnect = true;
@@ -29,14 +29,14 @@ public class Server {
 			while (iConnect) {
 		
 				Socket s = ss.accept();
-				ClientThread currentClient = new ClientThread(s);// ´´½¨Ïß³ÌÒıÓÃ
+				ClientThread currentClient = new ClientThread(s);// åˆ›å»ºçº¿ç¨‹å¼•ç”¨
 				InetAddress addr = s.getInetAddress();
-				System.out.println("·¢ÏÖ¿Í»§¶Ë£¡¿Í»§¶ËipÎª£º" + addr.getHostAddress());
-				clients.add(currentClient);// °Ñµ±Ç°¿Í»§¶Ë¼ÓÈë¼¯ºÏ
+				System.out.println("å‘ç°å®¢æˆ·ç«¯ï¼å®¢æˆ·ç«¯ipä¸ºï¼š" + addr.getHostAddress());
+				clients.add(currentClient);// æŠŠå½“å‰å®¢æˆ·ç«¯åŠ å…¥é›†åˆ
 				new Thread(currentClient).start();
-				System.out.println("¿Í»§¶Ë½ø³ÌÒÑ¾­Æô¶¯£¡");
+				System.out.println("å®¢æˆ·ç«¯è¿›ç¨‹å·²ç»å¯åŠ¨ï¼");
 			}
-			System.out.println("·şÎñÒÑ¾­¹Ø±Õ£¡");
+			System.out.println("æœåŠ¡å·²ç»å…³é—­ï¼");
 			ss.close();
 		} catch (IOException e) {
 			System.out.println("IOException");
@@ -54,7 +54,7 @@ public class Server {
 		private String username;
 		private String opname;
 		/**
-		 * Ğ¡¹¹Ò»ÏÂ
+		 * å°æ„ä¸€ä¸‹
 		 */
 		ClientThread(Socket s) {
 			this.s = s;
@@ -62,14 +62,14 @@ public class Server {
 		}
 
 		public void run() {
-			System.out.println("run·½·¨Æô¶¯ÁË£¡");
+			System.out.println("runæ–¹æ³•å¯åŠ¨äº†ï¼");
 			try {
 
 				while (iConnect) {
-					//System.out.println("RUN·½·¨ÖĞµÄwhileÑ­»·Æô¶¯£¬ÕıÔÚµÈ´ı¿Í»§¶ËµÄ·¢ËÍÏûÏ¢...");
+					//System.out.println("RUNæ–¹æ³•ä¸­çš„whileå¾ªç¯å¯åŠ¨ï¼Œæ­£åœ¨ç­‰å¾…å®¢æˆ·ç«¯çš„å‘é€æ¶ˆæ¯...");
 					InputStream is = s.getInputStream();
 					int len = is.available();
-					if (len != 0) // Èç¹ûÓÃ»§ÓĞÊäÈë,·şÎñÆ÷½ÓÊÕĞÅÏ¢
+					if (len != 0) // å¦‚æœç”¨æˆ·æœ‰è¾“å…¥,æœåŠ¡å™¨æ¥æ”¶ä¿¡æ¯
 					{
 
 						ByteArrayOutputStream out1 = new ByteArrayOutputStream();
@@ -78,11 +78,11 @@ public class Server {
 
 						is.read(buff);
 						out1.write(buff, 0, len);
-						str = new String(out1.toByteArray(), "UTF-8");// µ½´ËÎªÖ¹£¬readÎªÓÃ»§ÊäÈëµÄ×Ö·û´®
+						str = new String(out1.toByteArray(), "UTF-8");// åˆ°æ­¤ä¸ºæ­¢ï¼Œreadä¸ºç”¨æˆ·è¾“å…¥çš„å­—ç¬¦ä¸²
 
-						System.out.println("¿Í»§¶Ë·¢À´µÄĞÅÏ¢ÊÇ" + str);
+						System.out.println("å®¢æˆ·ç«¯å‘æ¥çš„ä¿¡æ¯æ˜¯" + str);
 						
-						//TODO ½âÂë³Éaccout+msg¸ñÊ½
+						//TODO è§£ç æˆaccout+msgæ ¼å¼
 						decodeMsg(str);
 
 						
@@ -95,23 +95,23 @@ public class Server {
 
 		}
 
-		// ½«ËÍÖÁ·şÎñÆ÷µÄÏûÏ¢·¢ËÍ¸øÃ¿¸öÁ¬½Óµ½µÄ¿Í»§¶Ë
+		// å°†é€è‡³æœåŠ¡å™¨çš„æ¶ˆæ¯å‘é€ç»™æ¯ä¸ªè¿æ¥åˆ°çš„å®¢æˆ·ç«¯
 
 		public void sendMsg(String str) {
 			try {
-				System.out.println("´´½¨Êä³ö¹ÜµÀ£¡");
+				System.out.println("åˆ›å»ºè¾“å‡ºç®¡é“ï¼");
 				OutputStream os = this.s.getOutputStream();
-				System.out.println("ÕıÔÚÏò¿Í»§¶ËĞ´ÏûÏ¢£¡");
+				System.out.println("æ­£åœ¨å‘å®¢æˆ·ç«¯å†™æ¶ˆæ¯ï¼");
 				 os.write(str.getBytes("UTF-8"));
-				System.out.println("ÕıÔÚÏò¿Í»§¶ËĞ´ÏûÏ¢³É¹¦£¡");
+				System.out.println("æ­£åœ¨å‘å®¢æˆ·ç«¯å†™æ¶ˆæ¯æˆåŠŸï¼");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
 		}
-		//½âÂë
+		//è§£ç 
 		public boolean decodeMsg(String str){
-			//Çé›r1£º®”éÍæ¼Ò¼ÓÈëß[‘òµÄÖ¸Áî
+			//æƒ…æ³1ï¼šç•¶ç‚ºç©å®¶åŠ å…¥éŠæˆ²çš„æŒ‡ä»¤
 			if(str.startsWith("username")){
 				String name=str.substring(9);
 				this.username=name;
@@ -120,10 +120,10 @@ public class Server {
 					Games game=new Games();
 					games.add(game);
 					games.get(games.size()-1).addPlayer(name);
-					System.out.println("ÕıÔÚµÈ´ıÆäËûÍæ¼Ò...");
+					System.out.println("æ­£åœ¨ç­‰å¾…å…¶ä»–ç©å®¶...");
 				}
 				else{
-					//¼´Íæ¼Ò¼ÓÈëºó¼´¿Éé_Ê¼ß[‘ò
+					//å³ç©å®¶åŠ å…¥åå³å¯é–‹å§‹éŠæˆ²
 					if(aGame.getPlayersNum()==2){
 						
 						this.opname= aGame.getPlayersID(0);
@@ -135,7 +135,7 @@ public class Server {
 								c.sendMsg("rank2");
 							}
 						}
-						System.out.println("ÕıÔÚé_Ê¼Ò»ˆöß[‘ò£º"+this.opname+" VS "+this.username);
+						System.out.println("æ­£åœ¨é–‹å§‹ä¸€å ´éŠæˆ²ï¼š"+this.opname+" VS "+this.username);
 					}
 				
 				}
@@ -143,7 +143,7 @@ public class Server {
 			}
 			else{
 				for (int i = 0; i < clients.size(); i++) {
-					System.out.println("×ª·¢ÏûÏ¢ÖĞ..." + i);
+					System.out.println("è½¬å‘æ¶ˆæ¯ä¸­..." + i);
 					ClientThread c = clients.get(i);
 					if(c.username.equals(opname)){
 						c.sendMsg(str);
